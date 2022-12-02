@@ -43,7 +43,9 @@ fun HomeScreenContent(
             listCategory,
             listProduct,
             titleToday,
-            listToday
+            listToday,
+            titlePopuler,
+            listPopuler
         ) = createRefs()
 
         Image(
@@ -127,6 +129,30 @@ fun HomeScreenContent(
                 }
         ) {
             CustomListTodayDeal()
+        }
+
+        //most popular
+        Text(
+            text = "Most Popular",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Black.copy(alpha = 0.6f),
+            modifier = Modifier
+                .padding(top = 20.dp, start = 15.dp)
+                .constrainAs(titlePopuler) {
+                    top.linkTo(listToday.bottom)
+                    start.linkTo(parent.start)
+                }
+        )
+
+        Column(
+            modifier = Modifier
+                .constrainAs(listPopuler) {
+                    top.linkTo(titlePopuler.bottom)
+                    start.linkTo(parent.start)
+                }
+        ) {
+            CustomListPopular()
         }
     }
 }

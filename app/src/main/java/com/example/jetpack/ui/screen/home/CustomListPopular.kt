@@ -2,10 +2,12 @@ package com.example.jetpack.ui.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,24 +24,24 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.jetpack.R
 import com.example.jetpack.ui.theme.bgGreen
 import com.example.jetpack.ui.theme.bgProduct
-import com.example.jetpack.ui.theme.bgToolbar
 import com.example.jetpack.ui.theme.bgTransient
 
 
 @Preview(showBackground = true)
 @Composable
-fun HomePreviewProduct() {
-    CustomListProduct()
+fun HomePreviewPopular() {
+    CustomListPopular()
 }
 
+
 @Composable
-fun CustomListProduct() {
+fun CustomListPopular() {
     LazyRow {
         items(10) {
             ConstraintLayout(
                 modifier = Modifier
-                    .height(220.dp)
-                    .width(160.dp)
+                    .height(200.dp)
+                    .width(180.dp)
                     .padding(horizontal = 10.dp)
                     .background(bgTransient)
                     .padding(bottom = 20.dp)
@@ -49,7 +51,7 @@ fun CustomListProduct() {
                 val (itemProduct, imvProduct, textProduct, textPrice) = createRefs()
                 ConstraintLayout(
                     modifier = Modifier
-                        .height(160.dp)
+                        .height(140.dp)
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(10.dp))
                         .background(bgProduct)
@@ -96,9 +98,8 @@ fun CustomListProduct() {
                     painter = painterResource(id = R.drawable.image_3), contentDescription = null,
                     modifier = Modifier.constrainAs(imvProduct) {
                         bottom.linkTo(horizontalGuideline75)
-                        start.linkTo(parent.start)
                         end.linkTo(parent.end)
-                    }
+                    }.width(120.dp).height(120.dp)
                 )
             }
         }
