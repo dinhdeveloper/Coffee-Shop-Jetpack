@@ -1,12 +1,19 @@
 package com.example.jetpack.ui.screen.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -20,18 +27,32 @@ import com.example.jetpack.R
 import com.example.jetpack.ui.theme.bgMainWhile
 import com.example.jetpack.utils.ShareViewModel
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 1000)
 @Composable
-fun HomePreview() {
-    HomeScreenContent(shareViewModel = ShareViewModel(), navController = rememberNavController())
+fun HomePreview1000() {
+    HomeScreen(shareViewModel = ShareViewModel(), navController = rememberNavController())
 }
 
+@Preview(showBackground = true, widthDp = 700)
 @Composable
-fun HomeScreenContent(
+fun HomePreview700() {
+    HomeScreen(shareViewModel = ShareViewModel(), navController = rememberNavController())
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomePreview400() {
+    HomeScreen(shareViewModel = ShareViewModel(), navController = rememberNavController())
+}
+
+
+@Composable
+fun HomeScreen(
     shareViewModel: ShareViewModel,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
+
     ConstraintLayout(
         modifier = modifier
     ) {
@@ -51,12 +72,14 @@ fun HomeScreenContent(
         Image(
             painter = painterResource(id = R.drawable.ic_bg_home_1),
             contentDescription = null,
-            modifier = Modifier.constrainAs(imgIcon) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                bottom.linkTo(horizontalGuideline50)
-            }
+            modifier = Modifier
+                .constrainAs(imgIcon) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(horizontalGuideline50)
+                }
+                .fillMaxSize()
         )
 
         Column(

@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.jetpack.ui.screen.hear.HearScreen
-import com.example.jetpack.ui.screen.home.HomeScreenContent
+import com.example.jetpack.ui.screen.home.HomeScreen
 import com.example.jetpack.ui.screen.menu.MenuScreen
 import com.example.jetpack.ui.screen.product_detail.ProductDetailScreen
 import com.example.jetpack.ui.screen.profile.ProfileScreen
@@ -27,7 +27,7 @@ fun NavigationSetup(
         //bottom nav
         composable(Screen.Home.route) {
             bottomBarState.value = true
-            HomeScreenContent(shareViewModel, navController)
+            HomeScreen(shareViewModel, navController)
         }
         composable(Screen.Menu.route) {
             bottomBarState.value = true
