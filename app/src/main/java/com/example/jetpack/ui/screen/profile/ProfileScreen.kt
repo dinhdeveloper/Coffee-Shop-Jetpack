@@ -19,9 +19,8 @@ import com.example.jetpack.utils.ShareViewModel
 
 @Composable
 fun ProfileScreen(
-    shareViewModel: ShareViewModel,
+    //shareViewModel: ShareViewModel,
     modifier: Modifier = Modifier
 ) {
-    var categoryModel = shareViewModel.categoryState
-    Log.d("SSSSSSSSSSSSS","${categoryModel?.categoryName}")
+
 }
