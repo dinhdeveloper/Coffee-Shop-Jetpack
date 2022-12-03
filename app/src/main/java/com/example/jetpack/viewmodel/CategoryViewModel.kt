@@ -17,33 +17,12 @@ class CategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) : ViewModel() {
 
-    val onlineCategoryUiState = mutableStateOf<UiState>(UiState.Loading)
-    val onlineCategory: MutableList<CategoryModel> = mutableStateListOf()
-
-    init {
-        getListCategory()
-    }
-
-    private fun getListCategory() {
-        if (onlineCategory.isNotEmpty()) return
+    val dataCategory: MutableList<CategoryModel> = mutableStateListOf()
+    fun getListCategory() {
+        if (dataCategory.isNotEmpty()) return
         viewModelScope.launch {
             categoryRepository.getListCategory().let { dataResponse ->
-                when (dataResponse) {
-                    is DataResponse.Loading -> {
-                        onlineCategoryUiState.value = UiState.Loading
-                    }
-                    is DataResponse.Success -> {
-                        /** Got a response from the server successfully */
-                        onlineCategoryUiState.value = UiState.Success
-                        dataResponse.data?.let { onlineCategory.addAll(it) }
-                        //dataResponse()?.let { onlineCategory.addAll(it) }
-                    }
-                    is DataResponse.Error -> {
-                        /** An error happened when fetching data from the server */
-                        onlineCategoryUiState.value =
-                            UiState.Error(error = dataResponse.message)
-                    }
-                }
+                dataResponse.let { dataCategory.addAll(it) }
             }
         }
     }

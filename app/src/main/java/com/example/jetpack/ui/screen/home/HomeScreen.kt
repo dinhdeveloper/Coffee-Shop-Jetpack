@@ -1,19 +1,16 @@
 package com.example.jetpack.ui.screen.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -21,11 +18,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.jetpack.R
+import com.example.jetpack.model.CategoryModel
 import com.example.jetpack.ui.theme.bgMainWhile
 import com.example.jetpack.utils.ShareViewModel
+import com.example.jetpack.viewmodel.CategoryViewModel
+
+@Preview(showBackground = true)
+@Composable
+fun HomePreview400() {
+    HomeScreen(shareViewModel = ShareViewModel(), navController = rememberNavController())
+}
 
 @Preview(showBackground = true, widthDp = 1000)
 @Composable
@@ -39,19 +45,24 @@ fun HomePreview700() {
     HomeScreen(shareViewModel = ShareViewModel(), navController = rememberNavController())
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HomePreview400() {
-    HomeScreen(shareViewModel = ShareViewModel(), navController = rememberNavController())
-}
 
-
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun HomeScreen(
     shareViewModel: ShareViewModel,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
+
+    var multiSelectValue = mutableStateOf<CategoryModel?>(null)
+
+    val categoryViewModel: CategoryViewModel = hiltViewModel()
+    categoryViewModel.getListCategory()
+    val dataCategory = categoryViewModel.dataCategory
+
+    if (dataCategory.size > 0) {
+        multiSelectValue.value = dataCategory[0]
+    }
 
     ConstraintLayout(
         modifier = modifier
@@ -116,7 +127,10 @@ fun HomeScreen(
                     start.linkTo(parent.start)
                 }
         ) {
-            CustomListCategory()
+            CustomListCategory(dataCategory, onClick = {
+                multiSelectValue.value = null
+                multiSelectValue.value = it
+            })
         }
         //list product
         Column(
@@ -127,7 +141,7 @@ fun HomeScreen(
                     start.linkTo(parent.start)
                 }
         ) {
-            CustomListProduct()
+            CustomListProduct(shareViewModel, navController, multiSelectValue.value)
         }
 
         //list today

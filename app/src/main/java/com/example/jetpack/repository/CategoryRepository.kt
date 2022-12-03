@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class CategoryRepository @Inject constructor(private val categoryServices : CategoryServiceImpl){
 
-    suspend fun getListCategory() : DataResponse<List<CategoryModel>>{
+    fun getListCategory() : List<CategoryModel>{
         return categoryServices.getListCategory()
     }
 }

@@ -11,68 +11,61 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.jetpack.model.CategoryModel
 import com.example.jetpack.ui.theme.bgGreen
 
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HomePreviewCategory() {
-    CustomListCategory()
 }
 
-data class ItemData(val content: String)
-
 @Composable
-fun CustomListCategory() {
-    val listA = listOf(
-        ItemData("Angola"),
-        ItemData("Bahrain"),
-        ItemData("Afghanistan"),
-        ItemData("Denmark"),
-        ItemData("Egypt"),
-        ItemData("El Salvador"),
-        ItemData("Fiji"),
-        ItemData("Japan"),
-        ItemData("Kazakhstan"),
-        ItemData("Kuwait"),
-        ItemData("Laos"),
-        ItemData("Mongolia")
-    )
+fun CustomListCategory(
+    dataCategory: MutableList<CategoryModel>,
+    onClick: (CategoryModel) -> Unit
+) {
 
-    var selectedItem by remember { mutableStateOf(listA[0]) }
+    var selectedItem by remember { mutableStateOf(dataCategory[0]) }
 
     LazyRow {
-        items(listA.size, itemContent = { surah ->
-                SurahListItem(
-                    itemData = listA[surah],
-                    setSelected = selectedItem.let {
-                        listA[surah].content == it.content
-                    }
-                ) {
+        items(dataCategory.size, itemContent = { surah ->
+            SurahListItem(
+                itemData = dataCategory[surah],
+                setSelected = selectedItem.let {
+                    dataCategory[surah].categoryId == it.categoryId
+                }, {
                     selectedItem = it
                 }
+            ) {
+                onClick(it)
             }
+        }
         )
     }
 }
 
 @Composable
 fun SurahListItem(
-    itemData: ItemData,
+    itemData: CategoryModel,
     setSelected: Boolean,
-    isSelected: (ItemData) -> Unit
+    isSelected: (CategoryModel) -> Unit,
+    onClick: (CategoryModel) -> Unit
 ) {
 
     val cardColor = if (setSelected) bgGreen else White
-    Text(
-        text = itemData.content.uppercase(),
-        color = cardColor,
-        fontFamily = FontFamily.Default,
-        fontSize = 15.sp,
-        modifier = Modifier
-            .padding(horizontal = 10.dp, vertical = 5.dp)
-            .clickable {
-                (if (!setSelected) itemData else null)?.let { isSelected(it) }
-            }
-    )
+    itemData.categoryName?.let {
+        Text(
+            text = it.uppercase(),
+            color = cardColor,
+            fontFamily = FontFamily.Default,
+            fontSize = 15.sp,
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+                .clickable {
+                    (if (!setSelected) itemData else null)?.let { it -> isSelected(it) }
+                    onClick(itemData)
+                }
+        )
+    }
 }

@@ -16,10 +16,10 @@ import com.example.jetpack.utils.ShareViewModel
 fun ProductDetailScreen(
     shareViewModel: ShareViewModel
 ) {
-    var categoryModel = shareViewModel.categoryState
-    LaunchedEffect(key1 = categoryModel){
-        if (categoryModel != null){
-            Log.e("SSSSSSSSSSSSS","${categoryModel.categoryName}")
+    var productModel = shareViewModel.productSate
+    LaunchedEffect(key1 = productModel){
+        if (productModel != null){
+            Log.e("SSSSSSSSSSSSS","${productModel.productName}")
         }
     }
 

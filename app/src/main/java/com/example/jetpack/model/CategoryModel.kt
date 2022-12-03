@@ -3,10 +3,7 @@ package com.example.jetpack.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class CategoryModel(
-    val categoryId: Int,
-    val categoryImage: String,
-    val categoryName: String,
-    val promotionId: Int
-) : Parcelable
+    val categoryId: Int = 0,
+    val categoryName: String? = ""
+)

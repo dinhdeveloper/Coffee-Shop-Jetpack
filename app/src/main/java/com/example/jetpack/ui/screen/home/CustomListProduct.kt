@@ -2,10 +2,10 @@ package com.example.jetpack.ui.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,23 +19,40 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.jetpack.R
+import com.example.jetpack.model.CategoryModel
+import com.example.jetpack.model.ProductModel
+import com.example.jetpack.navigation.Screen
 import com.example.jetpack.ui.theme.bgGreen
 import com.example.jetpack.ui.theme.bgProduct
-import com.example.jetpack.ui.theme.bgToolbar
 import com.example.jetpack.ui.theme.bgTransient
-
+import com.example.jetpack.utils.FormatNumber
+import com.example.jetpack.utils.ShareViewModel
+import com.example.jetpack.viewmodel.ProductViewModel
 
 @Preview(showBackground = true)
 @Composable
 fun HomePreviewProduct() {
-    CustomListProduct()
 }
 
 @Composable
-fun CustomListProduct() {
+fun CustomListProduct(
+    shareViewModel: ShareViewModel,
+    navController: NavController,
+    categoryModel: CategoryModel? = null
+) {
+
+    val productViewModel: ProductViewModel = hiltViewModel()
+//    productViewModel.getListProduct()
+//    val listProduct = productViewModel.dataProduct
+
+    categoryModel?.categoryId?.let { productViewModel.getListProductByCategory(it) }
+    var listProductSelected = productViewModel.dataProductByCategory
+
     LazyRow {
-        items(10) {
+        items(listProductSelected.size, itemContent = { index ->
             ConstraintLayout(
                 modifier = Modifier
                     .height(220.dp)
@@ -43,6 +60,10 @@ fun CustomListProduct() {
                     .padding(horizontal = 10.dp)
                     .background(bgTransient)
                     .padding(bottom = 20.dp)
+                    .clickable {
+                        shareViewModel.addProductModel(listProductSelected[index])
+                        navController.navigate(Screen.ProductDetailScreen.route)
+                    }
             ) {
                 val horizontalGuideline25 = createGuidelineFromTop(0.30f)
                 val horizontalGuideline75 = createGuidelineFromTop(0.65f)
@@ -61,7 +82,7 @@ fun CustomListProduct() {
                         }
                 ) {
                     Text(
-                        text = "100.000 VNĐ",
+                        text = FormatNumber.formatMoney(listProductSelected[index].priceSale),
                         fontWeight = FontWeight.Light,
                         fontStyle = FontStyle.Italic,
                         fontSize = 13.sp,
@@ -77,7 +98,7 @@ fun CustomListProduct() {
                     )
 
                     Text(
-                        text = "PHIN Sữa Đá PHIN Sữa Đá PHIN Sữa Đá",
+                        text = listProductSelected[index].productName,
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp,
                         color = Color.White,
@@ -101,6 +122,6 @@ fun CustomListProduct() {
                     }
                 )
             }
-        }
+        })
     }
 }

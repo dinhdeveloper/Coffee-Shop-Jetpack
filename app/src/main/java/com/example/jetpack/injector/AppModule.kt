@@ -1,7 +1,9 @@
 package com.example.jetpack.injector
 
-import com.example.jetpack.BuildConfig.DEBUG
+import android.content.Context
+import com.airbnb.lottie.BuildConfig.DEBUG
 import com.example.jetpack.repository.categoryImpl.CategoryServiceImpl
+import com.example.jetpack.repository.productImpl.ProductServiceImpl
 import com.example.jetpack.service.ApiService
 import com.example.jetpack.utils.Constants.BASE_URL
 import com.example.jetpack.utils.Constants.CONNECT_TIMEOUT
@@ -9,6 +11,7 @@ import com.example.jetpack.utils.Constants.READ_TIMEOUT
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -60,5 +63,11 @@ import javax.inject.Singleton
 
         @Provides
         @Singleton
-        fun categoryServicesImpl(apiService: ApiService) = CategoryServiceImpl(apiService)
+        fun categoryServicesImpl(@ApplicationContext context: Context) = CategoryServiceImpl(context)
+
+        @Provides
+        @Singleton
+        fun productServicesImpl(@ApplicationContext context: Context) = ProductServiceImpl(context)
+
+
     }
